@@ -2,19 +2,19 @@
 {
   "name": "Unit Converter",
   "short_name": "Converter",
-  "description": "A handy PWA to convert Celsius to Fahrenheit, Inches to Feet, and Rupees to Dollars.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
+  "description": "Elegant unit converter for temperature, length, and currency.",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

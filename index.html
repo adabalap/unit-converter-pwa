@@ -8,11 +8,80 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <title>Unit Converter</title>
 </head>
-<body class="flex items-center justify-center h-screen bg-blue-100">
-  <div class="text-center space-y-4">
-    <h1 class="text-3xl font-bold">Unit Converter</h1>
-    <p class="text-lg">Convert °C ↔ °F, inches ↔ feet, ₹ ↔ $</p>
+<body class="bg-blue-50 min-h-screen">
+
+<header class="bg-blue-600 text-white flex justify-between items-center p-4">
+  <button id="menuBtn" class="text-2xl">&#9776;</button>
+  <h1 class="text-xl font-bold">Unit Converter</h1>
+</header>
+
+<div id="sidebar" class="fixed left-0 top-0 w-64 h-full bg-white shadow transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
+  <div class="p-4">
+    <button onclick="selectConverter('temp')" class="block w-full text-left py-2 px-4 hover:bg-blue-100">Temperature</button>
+    <button onclick="selectConverter('length')" class="block w-full text-left py-2 px-4 hover:bg-blue-100">Length</button>
+    <button onclick="selectConverter('currency')" class="block w-full text-left py-2 px-4 hover:bg-blue-100">Currency</button>
   </div>
-  <script src="sw.js"></script>
+</div>
+
+<main class="flex flex-col items-center justify-center p-6 space-y-6">
+  <div id="converterCard" class="hidden bg-white w-full max-w-md p-6 rounded-lg shadow-md">
+    <h2 id="converterTitle" class="text-2xl font-bold text-center mb-4"></h2>
+    <div class="mb-4">
+      <label id="label1" class="block mb-1 text-gray-700"></label>
+      <input id="input1" type="number" class="w-full p-2 border rounded">
+    </div>
+    <div class="mb-4">
+      <label id="label2" class="block mb-1 text-gray-700"></label>
+      <input id="input2" type="number" class="w-full p-2 border rounded">
+    </div>
+  </div>
+</main>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const sidebar = document.getElementById('sidebar');
+const converterCard = document.getElementById('converterCard');
+const converterTitle = document.getElementById('converterTitle');
+const input1 = document.getElementById('input1');
+const input2 = document.getElementById('input2');
+const label1 = document.getElementById('label1');
+const label2 = document.getElementById('label2');
+
+menuBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('-translate-x-full');
+});
+
+function selectConverter(type) {
+  sidebar.classList.add('-translate-x-full');
+  converterCard.classList.remove('hidden');
+  input1.value = '';
+  input2.value = '';
+
+  if (type === 'temp') {
+    converterTitle.innerText = 'Temperature Converter';
+    label1.innerText = 'Celsius (°C)';
+    label2.innerText = 'Fahrenheit (°F)';
+    input1.oninput = () => input2.value = ((input1.value * 9/5) + 32).toFixed(2);
+    input2.oninput = () => input1.value = (((input2.value - 32) * 5/9)).toFixed(2);
+  } else if (type === 'length') {
+    converterTitle.innerText = 'Length Converter';
+    label1.innerText = 'Inches';
+    label2.innerText = 'Feet';
+    input1.oninput = () => input2.value = (input1.value / 12).toFixed(2);
+    input2.oninput = () => input1.value = (input2.value * 12).toFixed(2);
+  } else if (type === 'currency') {
+    converterTitle.innerText = 'Currency Converter';
+    label1.innerText = 'Rupees (₹)';
+    label2.innerText = 'Dollars ($)';
+    input1.oninput = () => input2.value = (input1.value / 83).toFixed(2);
+    input2.oninput = () => input1.value = (input2.value * 83).toFixed(2);
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
 </body>
 </html>
