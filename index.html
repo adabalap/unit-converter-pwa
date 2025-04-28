@@ -3,36 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boots Converter</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="manifest" href="manifest.json">
-  <title>Unit Converter</title>
+  <link rel="manifest" href="/manifest.json">
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
-  <h1 class="text-2xl font-bold mb-6 text-cyan-700">Unit Converter</h1>
+<body class="bg-cyan-50 flex flex-col items-center justify-start min-h-screen p-4">
 
-  <div class="space-y-8 w-full max-w-sm">
+  <img src="boots.png" alt="Boots Mascot" class="w-24 h-24 mt-4 rounded-full shadow-lg">
+  <h1 class="text-2xl font-bold mt-2 text-cyan-700">Hi, I'm Boots!</h1>
+  <p class="text-cyan-600 text-center mb-6">Ready to do your conversions faster than a monkey swing!</p>
 
-    <div class="bg-white rounded-2xl shadow p-4">
-      <h2 class="text-lg font-semibold mb-2 text-gray-700">Temperature (°C & ↔ °F)</h2>
-      <input id="celsius" type="number" placeholder="Celsius" class="w-full p-2 border rounded mb-2" oninput="convertTemp('C')">
-      <input id="fahrenheit" type="number" placeholder="Fahrenheit" class="w-full p-2 border rounded" oninput="convertTemp('F')">
-    </div>
+  <select id="conversionType" onchange="switchConverter()" class="p-2 border rounded bg-white mb-4 w-60">
+    <option value="temp">Temperature (°C ↔ °F)</option>
+    <option value="length">Length (in ↔ ft)</option>
+    <option value="currency">Currency (₹ ↔ $)</option>
+  </select>
 
-    <div class="bg-white rounded-2xl shadow p-4">
-      <h2 class="text-lg font-semibold mb-2 text-gray-700">Length (in ↔ ft)</h2>
-      <input id="inches" type="number" placeholder="Inches" class="w-full p-2 border rounded mb-2" oninput="convertLength('I')">
-      <input id="feet" type="number" placeholder="Feet" class="w-full p-2 border rounded" oninput="convertLength('F')">
-    </div>
-
-    <div class="bg-white rounded-2xl shadow p-4">
-      <h2 class="text-lg font-semibold mb-2 text-gray-700">Currency (₹ ↔ $)</h2>
-      <input id="rupees" type="number" placeholder="Rupees" class="w-full p-2 border rounded mb-2" oninput="convertCurrency('R')">
-      <input id="dollars" type="number" placeholder="Dollars" class="w-full p-2 border rounded" oninput="convertCurrency('D')">
-    </div>
-
-  </div>
+  <div id="converterArea" class="space-y-4 w-full max-w-xs bg-white p-4 rounded-2xl shadow"></div>
 
 <script>
+  function switchConverter() {
+    const type = document.getElementById('conversionType').value;
+    const area = document.getElementById('converterArea');
+    if (type === 'temp') {
+      area.innerHTML = `
+        <input id="celsius" type="number" placeholder="Celsius" class="w-full p-2 border rounded mb-2" oninput="convertTemp('C')">
+        <input id="fahrenheit" type="number" placeholder="Fahrenheit" class="w-full p-2 border rounded" oninput="convertTemp('F')">
+      `;
+    } else if (type === 'length') {
+      area.innerHTML = `
+        <input id="inches" type="number" placeholder="Inches" class="w-full p-2 border rounded mb-2" oninput="convertLength('I')">
+        <input id="feet" type="number" placeholder="Feet" class="w-full p-2 border rounded" oninput="convertLength('F')">
+      `;
+    } else if (type === 'currency') {
+      area.innerHTML = `
+        <input id="rupees" type="number" placeholder="Rupees" class="w-full p-2 border rounded mb-2" oninput="convertCurrency('R')">
+        <input id="dollars" type="number" placeholder="Dollars" class="w-full p-2 border rounded" oninput="convertCurrency('D')">
+      `;
+    }
+  }
+
   function convertTemp(from) {
     let c = parseFloat(document.getElementById('celsius').value);
     let f = parseFloat(document.getElementById('fahrenheit').value);
@@ -57,10 +67,20 @@
     let r = parseFloat(document.getElementById('rupees').value);
     let d = parseFloat(document.getElementById('dollars').value);
     if (from === 'R') {
-      document.getElementById('dollars').value = (r / 83).toFixed(2); // Assume 1$ = ₹83
+      document.getElementById('dollars').value = (r / 83).toFixed(2);
     } else {
       document.getElementById('rupees').value = (d * 83).toFixed(2);
     }
+  }
+
+  switchConverter();
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(function() {
+      console.log("Service Worker Registered");
+    });
   }
 </script>
 

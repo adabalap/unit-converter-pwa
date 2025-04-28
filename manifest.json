@@ -1,7 +1,7 @@
 {
-  "name": "Unit Converter",
-  "short_name": "Converter",
-  "start_url": "./index.html",
+  "name": "Boots Converter",
+  "short_name": "BootsConvert",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0d9488",
