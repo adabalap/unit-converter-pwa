@@ -1,99 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4f46e5">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
-  <title>Unit Converter PWA</title>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(function (registration) {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(function (error) {
-          console.log('Service Worker registration failed:', error);
-        });
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Unit Converter</title>
 </head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+  <h1 class="text-2xl font-bold mb-6 text-cyan-700">Unit Converter</h1>
 
-<body class="bg-gradient-to-br from-indigo-200 to-indigo-400 min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md">
-    <h1 class="text-2xl font-bold text-center text-indigo-600 mb-6">Unit Converter</h1>
+  <div class="space-y-8 w-full max-w-sm">
 
-    <div class="space-y-8">
-      <!-- Temperature Converter -->
-      <div>
-        <h2 class="text-xl font-semibold text-indigo-500 mb-2">Temperature</h2>
-        <div class="flex flex-col gap-3">
-          <input id="celsius" type="number" placeholder="Celsius" class="p-3 border rounded-xl">
-          <input id="fahrenheit" type="number" placeholder="Fahrenheit" class="p-3 border rounded-xl">
-        </div>
-      </div>
-
-      <!-- Length Converter -->
-      <div>
-        <h2 class="text-xl font-semibold text-indigo-500 mb-2">Length</h2>
-        <div class="flex flex-col gap-3">
-          <input id="inches" type="number" placeholder="Inches" class="p-3 border rounded-xl">
-          <input id="feet" type="number" placeholder="Feet" class="p-3 border rounded-xl">
-        </div>
-      </div>
-
-      <!-- Currency Converter -->
-      <div>
-        <h2 class="text-xl font-semibold text-indigo-500 mb-2">Currency</h2>
-        <div class="flex flex-col gap-3">
-          <input id="rupees" type="number" placeholder="Rupees" class="p-3 border rounded-xl">
-          <input id="dollars" type="number" placeholder="Dollars" class="p-3 border rounded-xl">
-        </div>
-      </div>
+    <div class="bg-white rounded-2xl shadow p-4">
+      <h2 class="text-lg font-semibold mb-2 text-gray-700">Temperature (°C & ↔ °F)</h2>
+      <input id="celsius" type="number" placeholder="Celsius" class="w-full p-2 border rounded mb-2" oninput="convertTemp('C')">
+      <input id="fahrenheit" type="number" placeholder="Fahrenheit" class="w-full p-2 border rounded" oninput="convertTemp('F')">
     </div>
+
+    <div class="bg-white rounded-2xl shadow p-4">
+      <h2 class="text-lg font-semibold mb-2 text-gray-700">Length (in ↔ ft)</h2>
+      <input id="inches" type="number" placeholder="Inches" class="w-full p-2 border rounded mb-2" oninput="convertLength('I')">
+      <input id="feet" type="number" placeholder="Feet" class="w-full p-2 border rounded" oninput="convertLength('F')">
+    </div>
+
+    <div class="bg-white rounded-2xl shadow p-4">
+      <h2 class="text-lg font-semibold mb-2 text-gray-700">Currency (₹ ↔ $)</h2>
+      <input id="rupees" type="number" placeholder="Rupees" class="w-full p-2 border rounded mb-2" oninput="convertCurrency('R')">
+      <input id="dollars" type="number" placeholder="Dollars" class="w-full p-2 border rounded" oninput="convertCurrency('D')">
+    </div>
+
   </div>
 
-  <script>
-    // Celsius <-> Fahrenheit
-    const celsius = document.getElementById('celsius');
-    const fahrenheit = document.getElementById('fahrenheit');
+<script>
+  function convertTemp(from) {
+    let c = parseFloat(document.getElementById('celsius').value);
+    let f = parseFloat(document.getElementById('fahrenheit').value);
+    if (from === 'C') {
+      document.getElementById('fahrenheit').value = ((c * 9/5) + 32).toFixed(2);
+    } else {
+      document.getElementById('celsius').value = ((f - 32) * 5/9).toFixed(2);
+    }
+  }
 
-    celsius.addEventListener('input', () => {
-      fahrenheit.value = ((parseFloat(celsius.value) * 9/5) + 32).toFixed(2);
-    });
+  function convertLength(from) {
+    let i = parseFloat(document.getElementById('inches').value);
+    let ft = parseFloat(document.getElementById('feet').value);
+    if (from === 'I') {
+      document.getElementById('feet').value = (i / 12).toFixed(2);
+    } else {
+      document.getElementById('inches').value = (ft * 12).toFixed(2);
+    }
+  }
 
-    fahrenheit.addEventListener('input', () => {
-      celsius.value = (((parseFloat(fahrenheit.value) - 32) * 5)/9).toFixed(2);
-    });
+  function convertCurrency(from) {
+    let r = parseFloat(document.getElementById('rupees').value);
+    let d = parseFloat(document.getElementById('dollars').value);
+    if (from === 'R') {
+      document.getElementById('dollars').value = (r / 83).toFixed(2); // Assume 1$ = ₹83
+    } else {
+      document.getElementById('rupees').value = (d * 83).toFixed(2);
+    }
+  }
+</script>
 
-    // Inches <-> Feet
-    const inches = document.getElementById('inches');
-    const feet = document.getElementById('feet');
-
-    inches.addEventListener('input', () => {
-      feet.value = (parseFloat(inches.value) / 12).toFixed(2);
-    });
-
-    feet.addEventListener('input', () => {
-      inches.value = (parseFloat(feet.value) * 12).toFixed(2);
-    });
-
-    // Rupees <-> Dollars
-    const rupees = document.getElementById('rupees');
-    const dollars = document.getElementById('dollars');
-    const conversionRate = 83; // 1 USD = 83 INR approx
-
-    rupees.addEventListener('input', () => {
-      dollars.value = (parseFloat(rupees.value) / conversionRate).toFixed(2);
-    });
-
-    dollars.addEventListener('input', () => {
-      rupees.value = (parseFloat(dollars.value) * conversionRate).toFixed(2);
-    });
-  </script>
 </body>
-
 </html>
-

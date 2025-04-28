@@ -1,11 +1,10 @@
 {
   "name": "Unit Converter",
   "short_name": "Converter",
-  "description": "A PWA for Temperature, Length, and Currency conversions",
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4f46e5",
+  "theme_color": "#0d9488",
   "orientation": "portrait",
   "icons": [
     {
@@ -20,4 +19,3 @@
     }
   ]
 }
-
