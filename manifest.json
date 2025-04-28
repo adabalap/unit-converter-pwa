@@ -1,11 +1,12 @@
+
 {
-  "name": "Boots Converter",
-  "short_name": "BootsConvert",
-  "start_url": "/index.html",
+  "name": "Unit Converter",
+  "short_name": "Converter",
+  "description": "A handy PWA to convert Celsius to Fahrenheit, Inches to Feet, and Rupees to Dollars.",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d9488",
-  "orientation": "portrait",
+  "theme_color": "#3b82f6",
   "icons": [
     {
       "src": "icon-192.png",

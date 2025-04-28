@@ -1,88 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boots Converter</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <title>Unit Converter</title>
 </head>
-<body class="bg-cyan-50 flex flex-col items-center justify-start min-h-screen p-4">
-
-  <img src="boots.png" alt="Boots Mascot" class="w-24 h-24 mt-4 rounded-full shadow-lg">
-  <h1 class="text-2xl font-bold mt-2 text-cyan-700">Hi, I'm Boots!</h1>
-  <p class="text-cyan-600 text-center mb-6">Ready to do your conversions faster than a monkey swing!</p>
-
-  <select id="conversionType" onchange="switchConverter()" class="p-2 border rounded bg-white mb-4 w-60">
-    <option value="temp">Temperature (°C ↔ °F)</option>
-    <option value="length">Length (in ↔ ft)</option>
-    <option value="currency">Currency (₹ ↔ $)</option>
-  </select>
-
-  <div id="converterArea" class="space-y-4 w-full max-w-xs bg-white p-4 rounded-2xl shadow"></div>
-
-<script>
-  function switchConverter() {
-    const type = document.getElementById('conversionType').value;
-    const area = document.getElementById('converterArea');
-    if (type === 'temp') {
-      area.innerHTML = `
-        <input id="celsius" type="number" placeholder="Celsius" class="w-full p-2 border rounded mb-2" oninput="convertTemp('C')">
-        <input id="fahrenheit" type="number" placeholder="Fahrenheit" class="w-full p-2 border rounded" oninput="convertTemp('F')">
-      `;
-    } else if (type === 'length') {
-      area.innerHTML = `
-        <input id="inches" type="number" placeholder="Inches" class="w-full p-2 border rounded mb-2" oninput="convertLength('I')">
-        <input id="feet" type="number" placeholder="Feet" class="w-full p-2 border rounded" oninput="convertLength('F')">
-      `;
-    } else if (type === 'currency') {
-      area.innerHTML = `
-        <input id="rupees" type="number" placeholder="Rupees" class="w-full p-2 border rounded mb-2" oninput="convertCurrency('R')">
-        <input id="dollars" type="number" placeholder="Dollars" class="w-full p-2 border rounded" oninput="convertCurrency('D')">
-      `;
-    }
-  }
-
-  function convertTemp(from) {
-    let c = parseFloat(document.getElementById('celsius').value);
-    let f = parseFloat(document.getElementById('fahrenheit').value);
-    if (from === 'C') {
-      document.getElementById('fahrenheit').value = ((c * 9/5) + 32).toFixed(2);
-    } else {
-      document.getElementById('celsius').value = ((f - 32) * 5/9).toFixed(2);
-    }
-  }
-
-  function convertLength(from) {
-    let i = parseFloat(document.getElementById('inches').value);
-    let ft = parseFloat(document.getElementById('feet').value);
-    if (from === 'I') {
-      document.getElementById('feet').value = (i / 12).toFixed(2);
-    } else {
-      document.getElementById('inches').value = (ft * 12).toFixed(2);
-    }
-  }
-
-  function convertCurrency(from) {
-    let r = parseFloat(document.getElementById('rupees').value);
-    let d = parseFloat(document.getElementById('dollars').value);
-    if (from === 'R') {
-      document.getElementById('dollars').value = (r / 83).toFixed(2);
-    } else {
-      document.getElementById('rupees').value = (d * 83).toFixed(2);
-    }
-  }
-
-  switchConverter();
-</script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(function() {
-      console.log("Service Worker Registered");
-    });
-  }
-</script>
-
+<body class="flex items-center justify-center h-screen bg-blue-100">
+  <div class="text-center space-y-4">
+    <h1 class="text-3xl font-bold">Unit Converter</h1>
+    <p class="text-lg">Convert °C ↔ °F, inches ↔ feet, ₹ ↔ $</p>
+  </div>
+  <script src="sw.js"></script>
 </body>
 </html>
