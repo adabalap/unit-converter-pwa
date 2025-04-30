@@ -1,8 +1,8 @@
 {
   "name": "Boots Buddy - Chuckle & Convert!",
   "short_name": "BootsBuddy",
-  "description": "A fun and cheerful PWA converter app for temperature, length, and currency with a Boots-style twist!",
-  "start_url": "/index.html",
+  "description": "A fun PWA for converting temperature, length, and currency with a Boots-style twist!",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3b82f6",
