@@ -1,21 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#3b82f6" />
-    
-    <!-- Manifest Link -->
-    <link rel="manifest" href="manifest.json" />
-    
-    <!-- Favicon / App Icon -->
-    <link rel="icon" href="icons/icon-192.png" />
-    <link rel="apple-touch-icon" href="icons/icon-512.png" />
-    
-    <title>Boots Buddy</title>
-  </head>
-  <body>
-    <h1>Welcome to Boots Buddy!</h1>
-    <p>Enjoy our fun and useful converters!</p>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter PWA ft. Boots!</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6"> <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="UnitConv">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Use Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* gray-100 */
+            overscroll-behavior: none; /* Prevent pull-to-refresh issues in PWA */
+        }
+        /* Style for the quote box */
+        #quoteBox {
+            background-color: #fff0db; /* orange-100 */
+            border-left: 4px solid #f59e0b; /* amber-500 */
+            color: #7c2d12; /* orange-900 */
+            transition: opacity 0.5s ease-in-out; /* Smooth fade */
+        }
+        /* Hide initially */
+        #quoteBox.hidden {
+            opacity: 0;
+        }
+        /* Confetti Container */
+        #confetti-container {
+            position: fixed; /* Position relative to viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allow clicks through */
+            overflow: hidden;
+            z-index: 9999; /* Ensure confetti is on top */
+        }
+        /* Individual Confetti Piece */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #facc15; /* Default color, will be randomized */
+            opacity: 0; /* Start invisible */
+            /* Animation properties */
+            animation: fall 3s ease-out forwards;
+        }
+        /* Confetti Animation Keyframes */
+        @keyframes fall {
+            0% {
+                opacity: 1; /* Fade in */
+                transform: translateY(-10vh) rotateZ(0deg); /* Start above screen */
+            }
+            100% {
+                opacity: 0; /* Fade out */
+                transform: translateY(110vh) rotateZ(720deg); /* Fall below screen and rotate */
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div id="confetti-container"></div>
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative z-10">
+        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Unit Converter ft. Boots!</h1>
+
+        <div class="mb-4">
+            <label for="conversionType" class="block text-sm font-medium text-gray-700 mb-1">Conversion Type:</label>
+            <select id="conversionType" name="conversionType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                <option value="length">Length</option>
+                <option value="temperature">Temperature</option>
+                </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="inputValue" class="block text-sm font-medium text-gray-700 mb-1">Value:</label>
+            <input type="number" id="inputValue" name="inputValue" placeholder="Enter value" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <label for="fromUnit" class="block text-sm font-medium text-gray-700 mb-1">From:</label>
+                <select id="fromUnit" name="fromUnit" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    </select>
+            </div>
+            <div>
+                <label for="toUnit" class="block text-sm font-medium text-gray-700 mb-1">To:</label>
+                <select id="toUnit" name="toUnit" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    </select>
+            </div>
+        </div>
+
+        <div class="text-center mb-6">
+             <button id="convertButton" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Convert!
+            </button>
+        </div>
+
+        <div id="resultArea" class="text-center text-lg font-semibold text-gray-800 mb-4 min-h-[28px]">
+            </div>
+
+        <div id="quoteBox" class="p-4 rounded-md text-center italic hidden">
+             <p id="quoteText"></p>
+             <p class="font-semibold mt-1">- Boots</p>
+        </div>
+
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        const conversionTypeSelect = document.getElementById('conversionType');
+        const inputValue = document.getElementById('inputValue');
+        const fromUnitSelect = document.getElementById('fromUnit');
+        const toUnitSelect = document.getElementById('toUnit');
+        const convertButton = document.getElementById('convertButton');
+        const resultArea = document.getElementById('resultArea');
+        const quoteBox = document.getElementById('quoteBox');
+        const quoteText = document.getElementById('quoteText');
+        const confettiContainer = document.getElementById('confetti-container');
+
+        // --- Boots Quotes ---
+        const bootsQuotes = [
+            "Swiper, no swiping!", "Ooh-ooh, ah-ah!", "Bananas!", "¡Delicioso!",
+            "We did it, we did it!", "I need my boots!", "A star! A star!",
+            "Can *you* see the Grumpy Old Troll?", "Let's go, vámonos!", "Map! Map! Map!",
+            "Did *you* see that blue arrow?", "Backpack! Backpack!",
+            "Yummy, yummy, yummy in my tummy, tummy, tummy!"
+        ];
+
+        // --- Unit Definitions ---
+        const units = {
+            length: {
+                meter: { name: 'Meter', factor: 1 }, kilometer: { name: 'Kilometer', factor: 0.001 },
+                centimeter: { name: 'Centimeter', factor: 100 }, millimeter: { name: 'Millimeter', factor: 1000 },
+                mile: { name: 'Mile', factor: 0.000621371 }, foot: { name: 'Foot', factor: 3.28084 },
+                inch: { name: 'Inch', factor: 39.3701 }
+            },
+            temperature: {
+                celsius: { name: 'Celsius' }, fahrenheit: { name: 'Fahrenheit' }, kelvin: { name: 'Kelvin' }
+            }
+            // Add more categories like 'weight', 'volume' here
+        };
+
+        // --- Functions ---
+
+        // Populate unit dropdowns based on selected conversion type
+        function populateUnits() {
+            const selectedType = conversionTypeSelect.value;
+            const unitOptions = units[selectedType];
+
+            // Clear existing options
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+
+            // Add new options
+            for (const key in unitOptions) {
+                const optionFrom = document.createElement('option');
+                optionFrom.value = key;
+                optionFrom.textContent = unitOptions[key].name;
+                fromUnitSelect.appendChild(optionFrom);
+
+                const optionTo = document.createElement('option');
+                optionTo.value = key;
+                optionTo.textContent = unitOptions[key].name;
+                toUnitSelect.appendChild(optionTo);
+            }
+
+             // Set default different units if possible
+             if (fromUnitSelect.options.length > 1) {
+                toUnitSelect.selectedIndex = 1; // Select the second unit by default in the 'To' dropdown
+             }
+        }
+
+        // Perform the conversion
+        function convert() {
+            const value = parseFloat(inputValue.value);
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+            const type = conversionTypeSelect.value;
+
+            // Clear previous results and hide quote
+            resultArea.textContent = '';
+            quoteBox.classList.add('hidden');
+
+
+            if (isNaN(value)) {
+                resultArea.textContent = 'Please enter a valid number.';
+                return; // Stop if input is not a number
+            }
+
+            let result; // Variable to store the conversion result
+
+            try {
+                 // Perform conversion based on type
+                 if (type === 'length') {
+                    const fromFactor = units.length[fromUnit].factor;
+                    const toFactor = units.length[toUnit].factor;
+                    // Convert value to base unit (meter), then to target unit
+                    result = (value / fromFactor) * toFactor;
+                } else if (type === 'temperature') {
+                    result = convertTemperature(value, fromUnit, toUnit);
+                }
+                 // Add logic for other types here (e.g., weight, volume)
+
+                // Display result (round to reasonable precision)
+                resultArea.textContent = `${value} ${units[type][fromUnit].name} = ${result.toFixed(4)} ${units[type][toUnit].name}`;
+
+                // Display a random Boots quote
+                displayRandomQuote();
+                // Trigger confetti effect
+                triggerConfetti();
+
+            } catch (error) {
+                 // Handle potential errors during conversion
+                 console.error("Conversion error:", error);
+                 resultArea.textContent = 'Conversion failed. Check units.';
+            }
+        }
+
+         // Specific function for temperature conversion
+         function convertTemperature(value, from, to) {
+            if (from === to) return value; // No conversion needed if units are the same
+
+            let celsiusValue;
+            // Convert input temperature to Celsius first (base unit for calculation)
+            if (from === 'celsius') {
+                celsiusValue = value;
+            } else if (from === 'fahrenheit') {
+                celsiusValue = (value - 32) * 5 / 9;
+            } else if (from === 'kelvin') {
+                celsiusValue = value - 273.15;
+            } else {
+                 throw new Error("Invalid 'from' temperature unit"); // Error for unknown unit
+            }
+
+            // Convert from Celsius to the target unit
+            if (to === 'celsius') {
+                return celsiusValue;
+            } else if (to === 'fahrenheit') {
+                return (celsiusValue * 9 / 5) + 32;
+            } else if (to === 'kelvin') {
+                return celsiusValue + 273.15;
+            } else {
+                 throw new Error("Invalid 'to' temperature unit"); // Error for unknown unit
+            }
+         }
+
+
+        // Display a random Boots quote
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * bootsQuotes.length);
+            quoteText.textContent = bootsQuotes[randomIndex];
+            // Use setTimeout to ensure the quote box is rendered before removing 'hidden'
+            // This allows the CSS transition (fade-in) to work correctly.
+            setTimeout(() => {
+                 quoteBox.classList.remove('hidden');
+            }, 10); // Small delay (10ms) is usually sufficient
+        }
+
+        // --- Confetti Function ---
+        function triggerConfetti() {
+            const colors = ['#facc15', '#fb923c', '#60a5fa', '#a78bfa', '#f87171']; // Array of Tailwind color hex codes
+            const numConfetti = 50; // Number of confetti pieces to generate
+
+            // Optional: Clear previous confetti elements if desired
+            // confettiContainer.innerHTML = '';
+
+            for (let i = 0; i < numConfetti; i++) {
+                // Create a new div element for each confetti piece
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti'); // Add the 'confetti' class for styling
+
+                // Randomize starting position, color, size, and animation timing
+                confetti.style.left = Math.random() * 100 + 'vw'; // Start horizontally across the viewport width
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]; // Pick a random color
+                const size = Math.random() * 8 + 6; // Random size between 6px and 14px
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's'; // Stagger start times slightly
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's'; // Random fall duration (2-4 seconds)
+
+                // Randomly make some confetti pieces circles or rectangles
+                if (Math.random() > 0.7) {
+                    confetti.style.borderRadius = '50%'; // Make it a circle
+                } else if (Math.random() > 0.4) {
+                    // Make it a taller rectangle sometimes
+                    confetti.style.height = (size * 1.5) + 'px';
+                }
+
+                // Append the confetti piece to its container
+                confettiContainer.appendChild(confetti);
+
+                // Remove the confetti element from the DOM after its animation ends
+                // This prevents buildup of invisible elements.
+                confetti.addEventListener('animationend', () => {
+                    confetti.remove();
+                });
+            }
+        }
+
+
+        // --- Event Listeners ---
+        // Update unit dropdowns when conversion type changes
+        conversionTypeSelect.addEventListener('change', populateUnits);
+        // Perform conversion when the button is clicked
+        convertButton.addEventListener('click', convert);
+        // Also perform conversion when Enter key is pressed in the input field
+        inputValue.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                convert();
+            }
+        });
+
+        // --- PWA Service Worker Registration ---
+        // Check if service workers are supported by the browser
+        if ('serviceWorker' in navigator) {
+            // Register the service worker after the page loads
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js') // Path to your service worker file
+                    .then(registration => {
+                        // Log success
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        // Log failure
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+
+        // --- Initial Setup ---
+        populateUnits(); // Populate units on initial page load
+
+    </script>
+
+</body>
 </html>
