@@ -1,22 +1,24 @@
 {
-  "name": "Boots Buddy - Chuckle & Convert!",
-  "short_name": "BootsBuddy",
-  "description": "A fun PWA for converting temperature, length, and currency with a Boots-style twist!",
-  "start_url": "index.html",
+  "name": "Unit Converter ft. Boots!",
+  "short_name": "UnitConv",
+  "description": "A simple unit converter PWA with fun Boots quotes!",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#f7fafc",
   "theme_color": "#3b82f6",
-  "orientation": "portrait",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "icons/icon-192x192.png", // <-- Replace with your actual icon path
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "icons/icon-512x512.png", // <-- Replace with your actual icon path
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+       "purpose": "any maskable"
     }
   ]
 }
