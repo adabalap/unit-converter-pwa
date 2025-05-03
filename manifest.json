@@ -1,15 +1,1 @@
-{
-  "name": "Boots Converter",
-  "short_name": "BootsApp",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#fef9c3",
-  "theme_color": "#facc15",
-  "icons": [
-    {
-      "src": "icons/boots.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
-    }
-  ]
-}
+{"name": "Boots Converter", "short_name": "Boots", "start_url": ".", "display": "standalone", "background_color": "#fff", "theme_color": "#facc15", "icons": [{"src": "icons/boots.png", "sizes": "192x192"}, {"src": "icons/boots.png", "sizes": "512x512"}]}
