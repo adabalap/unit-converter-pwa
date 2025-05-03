@@ -12,7 +12,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com">function toggleAbout() {
+  const modal = document.getElementById('aboutModal');
+  modal.classList.toggle('hidden');
+  modal.classList.toggle('flex');
+}
+</script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -50,6 +55,18 @@
   </style>
 </head>
 <body>
+  <!-- Info Modal -->
+  <div id="aboutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl text-amber-800 relative animate-fadeIn">
+      <button onclick="toggleAbout()" class="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-xl">&times;</button>
+      <h2 class="text-lg font-bold text-amber-700 mb-2">About Boots Converter</h2>
+      <p class="text-sm leading-relaxed">
+        <strong>Boots Converter</strong> is a fun, fast, and modern unit conversion app inspired by the playful spirit of Boots from PBS.
+        Enhanced with a sleek UI and powered by <strong>ADABALA</strong>, it combines cartoon charm with conversion precision.
+      </p>
+    </div>
+  </div>
+
   <div id="confetti-container"></div>  <!-- Modal Backdrop -->  <div id="aboutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl text-amber-800 relative animate-fadeIn">
       <button onclick="toggleAbout()" class="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-xl">&times;</button>
@@ -60,7 +77,10 @@
       </p>
     </div>
   </div>  <main class="max-w-2xl mx-auto px-6 py-12 relative">
-    <header class="text-center mb-10">
+    <div class="absolute top-4 right-4 z-50">
+  <button onclick="toggleAbout()" title="About Boots Converter" class="text-blue-700 hover:text-blue-900 text-2xl">ℹ️</button>
+</div>
+<header class="text-center mb-10">
       <div class="absolute top-6 right-6">
         <button onclick="toggleAbout()" title="About AryaCalc" class="text-amber-700 hover:text-yellow-600 text-xl">
           ℹ️
@@ -121,5 +141,10 @@
       modal.classList.toggle('hidden');
       modal.classList.toggle('flex');
     }
-  </script></body>
+  function toggleAbout() {
+  const modal = document.getElementById('aboutModal');
+  modal.classList.toggle('hidden');
+  modal.classList.toggle('flex');
+}
+</script></body>
 </html>
