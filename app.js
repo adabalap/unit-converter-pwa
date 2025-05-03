@@ -1,4 +1,22 @@
 
+
+const bootsQuotes = [
+  "¡Vámonos! Let's convert!",
+  "We did it, we did it!",
+  "Yummy, yummy in my tummy!",
+  "Swiper, no swiping!",
+  "I need my boots!",
+  "A star! A star!"
+];
+
+function displayRandomQuote() {
+  const idx = Math.floor(Math.random() * bootsQuotes.length);
+  const qb = document.getElementById('quoteBox');
+  const qt = document.getElementById('quoteText');
+  qt.textContent = bootsQuotes[idx];
+  qb.classList.remove('hidden');
+  setTimeout(() => qb.classList.add('hidden'), 3000);
+}
 const units = {
   length: {
     meter: { name: 'Meter', factor: 1 },
@@ -72,6 +90,7 @@ function convert() {
 
   resultArea.textContent = `${value} ${units[type][from].name} = ${result.toFixed(4)} ${units[type][to].name}`;
   animateBoots();
+  displayRandomQuote();
 }
 
 function animateBoots() {
