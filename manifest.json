@@ -1,24 +1,15 @@
 {
-  "name": "Unit Converter ft. Boots!",
-  "short_name": "UnitConv",
-  "description": "A simple unit converter PWA with fun Boots quotes!",
-  "start_url": "/",
+  "name": "Boots Converter",
+  "short_name": "BootsApp",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#f7fafc",
-  "theme_color": "#3b82f6",
-  "orientation": "portrait-primary",
+  "background_color": "#fef9c3",
+  "theme_color": "#facc15",
   "icons": [
     {
-      "src": "icons/icon-192.png", // <-- Replace with your actual icon path
+      "src": "icons/boots.svg",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png", // <-- Replace with your actual icon path
-      "sizes": "512x512",
-      "type": "image/png",
-       "purpose": "any maskable"
+      "type": "image/svg+xml"
     }
   ]
 }
